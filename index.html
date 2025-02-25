@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Javanese Primbon App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: 2rem;
+      color: #8b0000;
+    }
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+    nav ul li {
+      margin: 0 10px;
+    }
+    nav ul li button {
+      padding: 10px 20px;
+      background-color: #d2b48c;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+    nav ul li button:hover {
+      background-color: #a0522d;
+      color: white;
+    }
+    main {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+      }
+      nav ul li {
+        margin: 5px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Javanese Primbon App</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><button onclick="showSection('wetonan')">Wetonan</button></li>
+        <li><button onclick="showSection('compatibility')">Compatibility</button></li>
+        <li><button onclick="showSection('lucky-days')">Lucky Days</button></li>
+      </ul>
+    </nav>
+    <main>
+      <!-- Wetonan Section -->
+      <section id="wetonan" class="section active">
+        <h2>Wetonan Calculator</h2>
+        <div class="form-group">
+          <label for="wetonan-date">Enter Your Birth Date:</label>
+          <input type="date" id="wetonan-date">
+        </div>
+        <button onclick="calculateWeton()">Calculate Weton</button>
+        <div id="wetonan-result" class="result"></div>
+      </section>
+
+      <!-- Compatibility Section -->
+      <section id="compatibility" class="section">
+        <h2>Compatibility Checker</h2>
+        <div class="form-group">
+          <label for="person1-date">Person 1 Birth Date:</label>
+          <input type="date" id="person1-date">
+        </div>
+        <div class="form-group">
+          <label for="person2-date">Person 2 Birth Date:</label>
+          <input type="date" id="person2-date">
+        </div>
+        <button onclick="checkCompatibility()">Check Compatibility</button>
+        <div id="compatibility-result" class="result"></div>
+      </section>
+
+      <!-- Lucky Days Section -->
+      <section id="lucky-days" class="section">
+        <h2>Lucky Days Finder</h2>
+        <div class="form-group">
+          <label for="lucky-month">Select Month:</label>
+          <select id="lucky-month">
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="lucky-year">Select Year:</label>
+          <input type="number" id="lucky-year" min="1900" max="2100" value="2023">
+        </div>
+        <button onclick="findLuckyDays()">Find Lucky Days</button>
+        <div id="lucky-days-result" class="result"></div>
+      </section>
+    </main>
+    <footer>
+      © 2023 Javanese Primbon App
+    </footer>
+  </div>
+
+  <script>
+    // Show/hide sections
+    function showSection(sectionId) {
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(sectionId).classList.add('active');
+    }
+
+    // Wetonan Calculation
+    function calculateWeton() {
+      const wetonNames = ["Legi", "Pahing", "Pon", "Wage", "Kliwon"];
+      const date = new Date(document.getElementById('wetonan-date').value);
+      if (!date) return alert("Please select a valid date.");
+      const dayIndex = date.getDay(); // 0 for Sunday, 1 for Monday, etc.
+      const weton = wetonNames[dayIndex % 5];
+      document.getElementById('wetonan-result').innerHTML = `
+        <p>Your Weton is <strong>${weton}</strong>.</p>
+        <p>This indicates your spiritual connection to the universe.</p>
+      `;
+    }
+
+    // Compatibility Checker
+    function checkCompatibility() {
+      const date1 = new Date(document.getElementById('person1-date').value);
+      const date2 = new Date(document.getElementById('person2-date').value);
+      if (!date1 || !date2) return alert("Please select valid dates.");
+      const neptu1 = calculateNeptu(date1);
+      const neptu2 = calculateNeptu(date2);
+      const compatibilityScore = Math.abs(neptu1 - neptu2);
+      const resultText = compatibilityScore <= 5 
+        ? "High Compatibility! You are spiritually aligned." 
+        : "Low Compatibility. Differences may arise.";
+      document.getElementById('compatibility-result').innerHTML = `
+        <p>Compatibility Score: <strong>${compatibilityScore}</strong></p>
+        <p>${resultText}</p>
+      `;
+    }
+
+    // Neptu Calculation
+    function calculateNeptu(date) {
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      return (day + month + year) % 10; // Simplified Neptu calculation
+    }
+
+    // Lucky Days Finder
+    function findLuckyDays() {
+      const month = parseInt(document.getElementById('lucky-month').value);
+      const year = parseInt(document.getElementById('lucky-year').value);
+      if (!month || !year) return alert("Please select a valid month and year.");
+      const luckyDays = [];
+      for (let day = 1; day <= 31; day++) {
+        const date = new Date(year, month - 1, day);
+        if (date.getMonth() + 1 !== month) break; // Stop if invalid date
+        const neptu = calculateNeptu(date);
+        if (neptu % 3 === 0) luckyDays.push(day); // Example condition
+      }
+      const resultText = luckyDays.length > 0 
+        ? `Lucky days in ${new Date(year, month - 1).toLocaleString('default', { month: 'long' })}: <strong>${luckyDays.join(", ")}</strong>` 
+        : "No lucky days found this month.";
+      document.getElementById('lucky-days-result').innerHTML = `<p>${resultText}</p>`;
+    }
+
+    // Initialize first section as active
+    document.addEventListener('DOMContentLoaded', () => {
+      showSection('wetonan');
+    });
+  </script>
+</body>
+</html>
